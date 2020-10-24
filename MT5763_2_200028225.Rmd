@@ -170,7 +170,6 @@ PROC UNIVARIATE DATA= DATA.DATA_q1;
 VAR AGE HAIRGROWTHVALUE;
 RUN;
 
-
 proc template;
 define statgraph sgdesign;
 dynamic _AGE _HAIRGROWTHVALUE _TREATMENT _TREATMENT2;
@@ -188,5 +187,27 @@ run;
 proc sgrender data=DATA.DATA_q1 template=sgdesign;
 dynamic _AGE="AGE" _HAIRGROWTHVALUE="HAIRGROWTHVALUE" _TREATMENT="TREATMENT" _TREATMENT2="TREATMENT";
 run;
+
+/* ------------- Question 2 ------------- */
+proc template;
+define statgraph sgdesign;
+dynamic _HAIRGROWTHVALUE _TREATMENT _TREATMENT2;
+begingraph;
+  entrytitle halign=center 'Graph: 1 Effect of luxuriant treatment over the placbo treatment';
+   entryfootnote halign=left 'Type in your footnote...';
+   layout lattice / rowdatarange=data columndatarange=data rowgutter=10 columngutter=10;
+      layout overlay / xaxisopts=( discreteopts=( tickvaluefitpolicy=splitrotate));
+         boxplot x=_TREATMENT y=_HAIRGROWTHVALUE / group=_TREATMENT2 name='box' groupdisplay=Cluster;
+      endlayout;
+   endlayout;
+endgraph;
+end;
+run;
+
+proc sgrender data=DATA.TIDY_DATASET template=sgdesign;
+dynamic _HAIRGROWTHVALUE="HAIRGROWTHVALUE" _TREATMENT="TREATMENT" _TREATMENT2="TREATMENT";
+run;
+
+
 
 ```
