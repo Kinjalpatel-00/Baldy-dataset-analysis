@@ -158,4 +158,35 @@ VAR Age HairGrowthValue;
 RUN;
 
 
+
+/* ------------- Question 1 ------------- */
+
+DATA DATA.DATA_q1; 
+	SET DATA.TIDY_DATASET;
+	WHERE Treatment = "Luxuriant" OR Treatment = "Placebo";
+RUN;
+
+PROC UNIVARIATE DATA= DATA.DATA_q1;
+VAR AGE HAIRGROWTHVALUE;
+RUN;
+
+
+proc template;
+define statgraph sgdesign;
+dynamic _AGE _HAIRGROWTHVALUE _TREATMENT _TREATMENT2;
+begingraph;
+   entrytitle halign=center 'Graph: 1 Effect of luxuriant treatment over the placbo treatment';
+   layout lattice / rowdatarange=data columndatarange=data rowgutter=10 columngutter=10;
+      layout overlay;
+         seriesplot x=_AGE y=_HAIRGROWTHVALUE / group=_TREATMENT curvelabel=_TREATMENT2 name='series' connectorder=xaxis;
+      endlayout;
+   endlayout;
+endgraph;
+end;
+run;
+
+proc sgrender data=DATA.DATA_q1 template=sgdesign;
+dynamic _AGE="AGE" _HAIRGROWTHVALUE="HAIRGROWTHVALUE" _TREATMENT="TREATMENT" _TREATMENT2="TREATMENT";
+run;
+
 ```
