@@ -142,4 +142,20 @@ DATA DATA.TIDY_DATASET;
 	SET DATA.TIDY_DATASET;
 	HairGrowthValue = HairGrowthValue * 25.4;
 RUN;
+
+
+/* FREQUENCY TABLES for summery */
+PROC FREQ DATA=DATA.TIDY_DATASET;
+    TABLE Age ;
+RUN;
+
+/* summerizing tidy dataset */
+PROC CONTENTS DATA=DATA.TIDY_DATASET; 
+RUN;
+
+PROC UNIVARIATE DATA= DATA.TIDY_DATASET;
+VAR Age HairGrowthValue;
+RUN;
+
+
 ```
