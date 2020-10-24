@@ -1,14 +1,14 @@
 ---
-title: "MT5763_2_200028225"
+title: "MT5763_2_200028225 -- CHANGE"
 subtitle: "MT5763 : Individual courserwork 2" 
 author: "Student ID number : 200028225"
 date: October 28, 2020
 output: pdf_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+Git Hub Link: [link to my github repository](https://github.com/Kinjalpatel-00/MT5763_2_200028225.git)
+
+\newpage
 
 ## Abstract
 
@@ -16,23 +16,67 @@ knitr::opts_chunk$set(echo = TRUE)
 add purpose of your investigation 
 
 ## Analysis Description -
- clear account of what you did statistically as well as the data
-wrangling,) and why
+#### clear account of what you did statistically as well as the data
+#### wrangling,) and why
 
-## Resutls
-add visualization 
-are the results clearly explained and presented (includes data visualization):
+created the copy of existing dataset
+there was no null valuse in dataset. havet needed to removed any row or coluumns
+not needed to change the name of columns. 
 
+DATA WRAGLING:
+COPIED EXISTING DATA TO DATA SET TO AVOID MUNIPLATION ON ORIGINAL DATASET
+TRANSFORMING WIDE DATA TO LONG DATA - craeted 4 dataset and combined them
+convered hair growth values inches to mm.
+
+
+
+## Results
+#### add visualization 
+#### are the results clearly explained and presented (includes data visualization):
+Draw table of mean and different values to answers each of queation.
+NUMERICA SUMMARY TO CHECK MEAN , AND OTHER VALUES.
+HISTOGRAM OF AGE VARIABLE TO SEE IN WHICH AGE PPL ARE DOING WHICH TRAETAREMENT MORE.
+frequency table to check data set has which age highest data based on age
+summary of new data set 
 
 ## Further research - 
 
 ## Conclusion
 
 
-```{r cars}
-summary(cars)
-```
+## References
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+## Appendices - SAS Code
+
+Code can be reproducible by changeing file location. 
+
+```
+/* Generated Code (IMPORT) */
+/* Source File: Baldy.csv */
+/* Source Path: /folders/myfolders/MT5763_2_200028225 */
+/* Code generated on: 10/22/20, 4:48 PM */
+
+%web_drop_table(DATA.BALDY);
+
+FILENAME REFFILE '/folders/myfolders/Baldy.csv';
+
+PROC IMPORT DATAFILE=REFFILE
+	DBMS=CSV
+	OUT=DATA.BALDY;
+	GETNAMES=YES;
+RUN;
+
+/* View the basic details of dataset */
+PROC CONTENTS DATA=DATA.BALDY; 
+RUN;
+
+/* Disply the dataset in table format */
+%web_open_table(DATA.BALDY);
+
+
+/* Creating the copy of existing dataset*/
+DATA DATA.COPY_DATASET;
+SET DATA.BALDY;
+RUN;
+
 ```
