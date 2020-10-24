@@ -20,12 +20,12 @@ add purpose of your investigation
 #### wrangling,) and why
 
 created the copy of existing dataset
-there was no null valuse in dataset. havet needed to removed any row or coluumns
+there was no null values in dataset. havet needed to removed any row or columns
 not needed to change the name of columns. 
 
 DATA WRAGLING:
 COPIED EXISTING DATA TO DATA SET TO AVOID MUNIPLATION ON ORIGINAL DATASET
-TRANSFORMING WIDE DATA TO LONG DATA - craeted 4 dataset and combined them
+TRANSFORMING WIDE DATA TO LONG DATA - created 4 dataset and combined them
 convered hair growth values inches to mm.
 
 
@@ -78,5 +78,19 @@ RUN;
 DATA DATA.COPY_DATASET;
 SET DATA.BALDY;
 RUN;
+
+/*----------------------- SUMMIRINZING DATASET --------------------------------*/
+
+/* Summirizing the numeric variables of different treatments*/
+PROC UNIVARIATE DATA= DATA.COPY_DATASET;
+VAR LUXURIANT PLACEBO BALDBEGONE SKINHEADNOMORE;
+RUN;
+
+
+/* Summirizing the numeric variables of age when treatment was done*/
+PROC UNIVARIATE DATA= DATA.COPY_DATASET;
+VAR AGELUXURIANT AGEPLACEBO AGEBALDBEGONE AGESKINHEADNOMORE;
+RUN;
+
 
 ```
