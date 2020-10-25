@@ -210,4 +210,44 @@ run;
 
 
 
+/* ------------- Question 3 ------------- */
+proc template;
+define statgraph sgdesign;
+dynamic _AGE _TREATMENT;
+begingraph;
+   entrytitle halign=center 'Type in your title...';
+   entryfootnote halign=left 'Type in your footnote...';
+   layout lattice / rowdatarange=data columndatarange=data rowgutter=10 columngutter=10;
+      layout overlay / xaxisopts=( discreteopts=( tickvaluefitpolicy=splitrotate));
+         boxplot x=_TREATMENT y=_AGE / name='box' groupdisplay=Cluster;
+      endlayout;
+   endlayout;
+endgraph;
+end;
+run;
+
+proc sgrender data=DATA.TIDY_DATASET template=sgdesign;
+dynamic _AGE="AGE" _TREATMENT="TREATMENT";
+run;
+
+
+
+
+/* fit the model*/
+PROC GLM data=DATA.TIDY_DATASET outstat=outStat plots=diagnostics;
+  CLASS age;
+  MODEL HAIRGROWTHVALUE = age / solution clparm;
+  ODS output fFitStatistics = modelFit ParameterEstimates =parEsts;
+RUN;
+Quit;
+
+
+PROC sgplot data=DATA.TIDY_DATASET;
+reg x= HAIRGROWTHVALUE y = age/CLM CLI;
+scatter x= HAIRGROWTHVALUE y = age ;
+RUN;
+
+
+
+
 ```
