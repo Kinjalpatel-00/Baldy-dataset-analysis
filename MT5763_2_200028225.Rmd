@@ -248,6 +248,20 @@ scatter x= HAIRGROWTHVALUE y = age ;
 RUN;
 
 
+/* Assumption */
+
+PROC GLM data=DATA.TIDY_DATASET;
+  CLASS age;
+  MODEL HAIRGROWTHVALUE = age;
+  OUTPUT out=DATA.obsOut p=yhat r=resid lclm= lowerCI uclm = upperCI;
+RUN;
+Quit;
+
+
+PROC UNIVARIATE data=DATA.obsOut normaltest;
+var resid;
+QQPLOT resid/normal (mu=est sigma=est);
+RUN;
 
 
 ```
