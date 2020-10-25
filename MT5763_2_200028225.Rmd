@@ -93,8 +93,6 @@ VAR AGELUXURIANT AGEPLACEBO AGEBALDBEGONE AGESKINHEADNOMORE;
 RUN;
 
 
-
-
 /*---------------- CONVERTING THE DATASET TO THREE COLUMNS AGE, HAIR GROWTH VALUE, TREATMENT*/
 
 /* CHANGE DATASET TRANSPOSE WIDE TO LONG  */
@@ -118,6 +116,7 @@ RUN;
 DATA DATA.DATA_BALDBEGONE; 
 	SET DATA.COPY_DATASET ;
 	Treatment = "BaldBeGone";
+	length Treatment $ 20;
 	RENAME AGEBALDBEGONE = Age;
 	RENAME BALDBEGONE = HairGrowthValue;
 	KEEP AGEBALDBEGONE BALDBEGONE Treatment; 
@@ -126,6 +125,7 @@ RUN;
 DATA DATA.DATA_SKINHEADNOMORE; 
 	SET DATA.COPY_DATASET ;
 	Treatment = "SkinheadNoMore";
+	length Treatment $ 20;
 	RENAME AGESKINHEADNOMORE = Age;
 	RENAME SKINHEADNOMORE = HairGrowthValue;
 	KEEP AGESKINHEADNOMORE SKINHEADNOMORE Treatment; 
@@ -133,16 +133,15 @@ RUN;
 
 /* Merging all 4 datasets*/
 DATA DATA.TIDY_DATASET;
+	length Treatment $ 20;
     SET DATA.DATA_LUXURIANT DATA.DATA_PLACEBO DATA.DATA_BALDBEGONE DATA.DATA_SKINHEADNOMORE ;
 RUN;
-
 
 /* CHANGE HAIR GROTH VALUES(INCHES) TO MILIMIITER*/
 DATA DATA.TIDY_DATASET;
 	SET DATA.TIDY_DATASET;
 	HairGrowthValue = HairGrowthValue * 25.4;
 RUN;
-
 
 /* FREQUENCY TABLES for summery */
 PROC FREQ DATA=DATA.TIDY_DATASET;
@@ -157,10 +156,7 @@ PROC UNIVARIATE DATA= DATA.TIDY_DATASET;
 VAR Age HairGrowthValue;
 RUN;
 
-
-
 /* ------------- Question 1 ------------- */
-
 DATA DATA.DATA_q1; 
 	SET DATA.TIDY_DATASET;
 	WHERE Treatment = "Luxuriant" OR Treatment = "Placebo";
@@ -193,7 +189,7 @@ proc template;
 define statgraph sgdesign;
 dynamic _HAIRGROWTHVALUE _TREATMENT _TREATMENT2;
 begingraph;
-  entrytitle halign=center 'Graph: 1 Effect of luxuriant treatment over the placbo treatment';
+   entrytitle halign=center 'Graph: 2 Hair growth effects of different treatments';
    entryfootnote halign=left 'Type in your footnote...';
    layout lattice / rowdatarange=data columndatarange=data rowgutter=10 columngutter=10;
       layout overlay / xaxisopts=( discreteopts=( tickvaluefitpolicy=splitrotate));
@@ -208,14 +204,12 @@ proc sgrender data=DATA.TIDY_DATASET template=sgdesign;
 dynamic _HAIRGROWTHVALUE="HAIRGROWTHVALUE" _TREATMENT="TREATMENT" _TREATMENT2="TREATMENT";
 run;
 
-
-
 /* ------------- Question 3 ------------- */
 proc template;
 define statgraph sgdesign;
 dynamic _AGE _TREATMENT;
 begingraph;
-   entrytitle halign=center 'Type in your title...';
+   entrytitle halign=center 'Graph 2:';
    entryfootnote halign=left 'Type in your footnote...';
    layout lattice / rowdatarange=data columndatarange=data rowgutter=10 columngutter=10;
       layout overlay / xaxisopts=( discreteopts=( tickvaluefitpolicy=splitrotate));
@@ -230,10 +224,7 @@ proc sgrender data=DATA.TIDY_DATASET template=sgdesign;
 dynamic _AGE="AGE" _TREATMENT="TREATMENT";
 run;
 
-
-
-
-/* fit the model*/
+/* fit the model with whole dataset */
 PROC GLM data=DATA.TIDY_DATASET outstat=outStat plots=diagnostics;
   CLASS age;
   MODEL HAIRGROWTHVALUE = age / solution clparm;
@@ -241,14 +232,12 @@ PROC GLM data=DATA.TIDY_DATASET outstat=outStat plots=diagnostics;
 RUN;
 Quit;
 
-
 PROC sgplot data=DATA.TIDY_DATASET;
 reg x= HAIRGROWTHVALUE y = age/CLM CLI;
 scatter x= HAIRGROWTHVALUE y = age ;
 RUN;
 
-
-/* Assumption */
+/* Assumption for whole dataset*/
 
 PROC GLM data=DATA.TIDY_DATASET;
   CLASS age;
@@ -262,6 +251,151 @@ PROC UNIVARIATE data=DATA.obsOut normaltest;
 var resid;
 QQPLOT resid/normal (mu=est sigma=est);
 RUN;
+
+
+/*-------------Fit the model with Luxuriant treatment-------------*/
+DATA DATA.DATA_Luxuriant; 
+	SET DATA.TIDY_DATASET;
+	WHERE Treatment = "Luxuriant";
+RUN;
+
+PROC GLM data=DATA.DATA_Luxuriant outstat=outStat_Luxuriant plots=diagnostics;
+  CLASS age;
+  MODEL HAIRGROWTHVALUE = age / solution clparm;
+  ODS output fFitStatistics = modelFit ParameterEstimates =parEsts;
+RUN;
+Quit;
+
+PROC sgplot data=DATA.DATA_Luxuriant;;
+reg x= HAIRGROWTHVALUE y = age/CLM CLI;
+scatter x= HAIRGROWTHVALUE y = age ;
+RUN;
+
+/* Assumption for Luxuriant treatment*/
+
+PROC GLM data=DATA.DATA_Luxuriant;
+  CLASS age;
+  MODEL HAIRGROWTHVALUE = age;
+  OUTPUT out=DATA.obsOut_Luxuriant p=yhat r=resid lclm= lowerCI uclm = upperCI;
+RUN;
+Quit;
+
+
+PROC UNIVARIATE data=DATA.obsOut_Luxuriant normaltest;
+var resid;
+QQPLOT resid/normal (mu=est sigma=est);
+RUN;
+
+
+/*-------------Fit the model with Placebo treatment-------------*/
+DATA DATA.DATA_Placebo; 
+	SET DATA.TIDY_DATASET;
+	WHERE Treatment = "Placebo";
+RUN;
+
+PROC GLM data=DATA.DATA_Placebo outstat=outStat_Placebo plots=diagnostics;
+  CLASS age;
+  MODEL HAIRGROWTHVALUE = age / solution clparm;
+  ODS output fFitStatistics = modelFit ParameterEstimates =parEsts;
+RUN;
+Quit;
+
+PROC sgplot data=DATA.DATA_Placebo;
+reg x= HAIRGROWTHVALUE y = age/CLM CLI;
+scatter x= HAIRGROWTHVALUE y = age ;
+RUN;
+
+/* Assumption for Placebo treatment*/
+PROC GLM data=DATA.DATA_Placebo;
+  CLASS age;
+  MODEL HAIRGROWTHVALUE = age;
+  OUTPUT out=DATA.obsOut_Placebo p=yhat r=resid lclm= lowerCI uclm = upperCI;
+RUN;
+Quit;
+
+
+PROC UNIVARIATE data=DATA.obsOut_Placebo normaltest;
+var resid;
+QQPLOT resid/normal (mu=est sigma=est);
+RUN;
+
+
+/*-------------Fit the model with BaldBeGone treatment-------------*/
+DATA DATA.DATA_BaldBeGone; 
+	SET DATA.TIDY_DATASET;
+	WHERE Treatment = "BaldBeGone";
+RUN;
+
+PROC GLM data=DATA.DATA_BaldBeGone outstat=outStat_BaldBeGone plots=diagnostics;
+  CLASS age;
+  MODEL HAIRGROWTHVALUE = age / solution clparm;
+  ODS output fFitStatistics = modelFit ParameterEstimates =parEsts;
+RUN;
+Quit;
+
+PROC sgplot data=DATA.DATA_BaldBeGone;
+reg x= HAIRGROWTHVALUE y = age/CLM CLI;
+scatter x= HAIRGROWTHVALUE y = age ;
+RUN;
+
+/* Assumption for BaldBeGone treatment*/
+PROC GLM data=DATA.DATA_BaldBeGone;
+  CLASS age;
+  MODEL HAIRGROWTHVALUE = age;
+  OUTPUT out=DATA.obsOut_BaldBeGone p=yhat r=resid lclm= lowerCI uclm = upperCI;
+RUN;
+Quit;
+
+
+PROC UNIVARIATE data=DATA.obsOut_BaldBeGone normaltest;
+var resid;
+QQPLOT resid/normal (mu=est sigma=est);
+RUN;
+
+/*-------------Fit the model with SkinheadNoMore treatment-------------*/
+DATA DATA.DATA_SkinheadNoMore; 
+	SET DATA.TIDY_DATASET;
+	WHERE Treatment = "SkinheadNoMore";
+RUN;
+
+PROC GLM data=DATA.DATA_SkinheadNoMore outstat=outStat_SkinheadNoMore plots=diagnostics;
+  CLASS age;
+  MODEL HAIRGROWTHVALUE = age / solution clparm;
+  ODS output fFitStatistics = modelFit ParameterEstimates =parEsts;
+RUN;
+Quit;
+
+PROC sgplot data=DATA.DATA_SkinheadNoMore ;
+reg x= HAIRGROWTHVALUE y = age/CLM CLI;
+scatter x= HAIRGROWTHVALUE y = age ;
+RUN;
+
+
+/* Assumption for SkinheadNoMore treatment*/
+PROC GLM data=DATA.DATA_SkinheadNoMore;
+  CLASS age;
+  MODEL HAIRGROWTHVALUE = age;
+  OUTPUT out=DATA.obsOut_SkinheadNoMore p=yhat r=resid lclm= lowerCI uclm = upperCI;
+RUN;
+Quit;
+
+
+PROC UNIVARIATE data=DATA.obsOut_SkinheadNoMore normaltest;
+var resid;
+QQPLOT resid/normal (mu=est sigma=est);
+RUN;
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ```
