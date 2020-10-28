@@ -6,38 +6,60 @@ date: October 28, 2020
 output: pdf_document
 ---
 
-Git Hub Link: [link to my github repository](https://github.com/Kinjalpatel-00/MT5763_2_200028225.git)
+Github Link of private repository: [Click here](https://github.com/Kinjalpatel-00/MT5763_2_200028225.git)
 
-\newpage
+```{r setup, include=FALSE}
+library(knitr)
+```
 
 ## Abstract
+--------------write general info 
+
+This analytic paper uses the data of hair growth on randomly selected male groups after receiving different male pattern baldness (MPB) treatments over a month. Data wrangling has been down to optimize the dataset in a way which can be easier to read and operate the statistical operations. Fits Liner model in order to determine effects of person’s age over hair growth measurement after receiving different MPB treatments for a month. This study finds that 
+
+---------------Write about results
 
 ## Introduction
-add purpose of your investigation 
+
+The male pattern baldness (MPB) has been major concern in global community. The demand of new products and treatments has increased a lot.  The MPB is the most common way to loss hair among men at age of 20-30 and it increased 10% per decade.3 Thus, scientist and researches are using advanced statistical approach to analysis and examine the relationship between hair growth on men of different MPB treatments over their ages. This study helps to find which treatment can be more effective for which group of male population which are more or less totally bald. 
+---------------Write about results
 
 ## Analysis Description -
-#### clear account of what you did statistically as well as the data
-#### wrangling,) and why
 
-created the copy of existing dataset
-there was no null values in dataset. havet needed to removed any row or columns
-not needed to change the name of columns. 
-
-DATA WRAGLING:
-COPIED EXISTING DATA TO DATA SET TO AVOID MUNIPLATION ON ORIGINAL DATASET
-TRANSFORMING WIDE DATA TO LONG DATA - created 4 dataset and combined them
-convered hair growth values inches to mm.
+We have results of newly invented drug called luxuriant and other 3 existing drugs effect over randomly allocated groups of men. Data wrangling was proces was performed to reshape the data in a form suitable for analysis. The given dataset neither has an extra variable nor any null values which required to be removed, therefore, not a single column or row has removed from original dataset. For further process, the copy of dataset was made, in order to avoid any unintentionally change in original dataset. The wide to long transformation has been implemented to get the optimized version of the data, as it would be clearer to see each row of data as individual person. In order to obtain that, treatment column has added to the data. As result, the newly created dataset has 3 columns, named treatment, hair growth values and age (figure 1). In result, newly created dataset has 400 rows and 3 columns.
 
 
+
+
+```{r out.width = "50%" , echo=FALSE ,fig.align = 'center', fig.cap = "First few rows of newly craeted dataset (wide to long transformation) "}
+include_graphics("/Users/kinjalpatel/Desktop/img1.png")
+```
+
+The hair growth values has been changed from inches to millimeters to determine more human understandable. Statistical summary and frequency tables for numeric values have been calculated for analysis purpose of the dataset after each operation. The graphs and the results of analysis has discussed in the below section. 
 
 ## Results
-#### add visualization 
-#### are the results clearly explained and presented (includes data visualization):
-Draw table of mean and different values to answers each of queation.
-NUMERICA SUMMARY TO CHECK MEAN , AND OTHER VALUES.
-HISTOGRAM OF AGE VARIABLE TO SEE IN WHICH AGE PPL ARE DOING WHICH TRAETAREMENT MORE.
-frequency table to check data set has which age highest data based on age
-summary of new data set 
+
+To determine, if luxuriant treatment is above or beyond the placebo, the series plot has generated. New dataset with only treatments luxuriant and placebo was made to avoid any accidentally manipulation of data with other 2 treatments. 
+
+```{r out.width = "60%" , echo=FALSE ,fig.align = 'center', fig.cap = "Effect of luxuriant treatment over the placbo treatment "}
+include_graphics("/Users/kinjalpatel/Desktop/img2.png")
+```
+As per Figure 2, we can determine that newly created drug is more effective than existing drug called placebo for all age group. Thus, to be more specific for analysis, the statical summary for both treatments have discussed below. 
+
+| Treatment      | Mean       | Std Deviation | Range    | Variance   | Std Error Mean | p Value(Student's t) |
+|----------------|------------|---------------|----------|------------|----------------|----------------------|
+| luxuriant      | 12.99950   | 7.52583       | 36.40346 | 56.6380857 | 0.75258279     | <.0001               |
+| placbo         | 2.485074   | 2.40679       | 13.22991 | 5.79266    | 0.24067941     |               <.0001 |
+| BaldBeGone     | 36.1521295 | 19.7447168    | 96.19019 | 389.85384  | 1.97447168     |               <.0001 |
+| SkinHeadNoMore | 18.74009   | 11.02093      | 54.30731 | 121.46095  | 1.10209323     | <.0001               |
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Table 1: Statistical summary of Hair growth variable for different treatments
+
+The mean of hair growth variable for luxuriant treatment is 12.99 whereas for placebo treatment it is only 2.48, which implies that average hair growth value(mm) is higher in luxuriant treatment. However, we can see the variance of both treatment which are respectively 56.63 and 5.79, which says that data is more spread out around mean for luxuriant treatment data. The value of standard error for luxuriant treatment is 0.75 which conclude that sample mean is more likely precise estimate of population mean. (Refer to table 1) 
+
+
+
+## Software use
 
 ## Further research - 
 
@@ -48,7 +70,7 @@ summary of new data set
 
 ## Appendices - SAS Code
 
-Code can be reproducible by changeing file location. 
+Code can be reproducible by changing file location. 
 
 ```
 /* Generated Code (IMPORT) */
