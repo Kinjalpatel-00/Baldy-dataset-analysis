@@ -79,11 +79,6 @@ include_graphics("/Users/kinjalpatel/Desktop/img4.png")
 
 ```
 
-
-
-
-
-
 The R-square values for luxuriant treatments are also 0.27, which implies that there is no relationship between age and hair growth values. The same logic applies for placebo, bladBeGone, and skinHeadNoMore treatments, R-squares values are 0.270, 0.160, and 0.335 respectively (Refer to Table 2), which justify that relation between age and hair growth values for each individual treatments too. the lower root means square error reflects on the distribution of data and implies that data is centralized around the central moment (mean). (Moody, J. (2019, September 5)). Although our results do not match with theory, we have quite a high root MSE that refers that each treatment data is not centralized. 
 
 ## Assumption Check
@@ -104,12 +99,16 @@ The P Value <0.0001 (which is <0.05)of Shapiro-Wilk test concludes that we rejec
 
 ## Software use
 
-The SAS version 3.8 (Basic Edition) was used to run the analysis of data using the university SAS edition. Also, the Apps Anywhere SAS edition was used to generate the graphs. The graph can be found in the appendices section of this report. R Studio was being used to produce this PDF report.
+The SAS version 3.8 (Basic Edition) was used to run the analysis of data using the university SAS edition. Also, the Apps Anywhere SAS edition was used to generate the graphs. The graph can be found in the appendices section of this report. R Studio was being used to produce this PDF report. 
+
 
 ## Further research 
 
+The provided dataset information could have more variables in it. The hair growth variable could depend on genetic factors (Ellis, J. A., & Sinclair, R. D. (2008). The quality of hair does have a bit of effect on hair growth for MPB treatments in elderly men (Rexbye, H., Petersen, I., Iachina, M., Mortensen, J., McGue, M., Vaupel, J., & Christensen, K. (n.d.)). By adding a few more variables to the dataset could give more accurate results. 
+
 ## Conclusion
 
+This study does not find any relationship between age to hair growth values for any MBP treatments. But reaches does found some relationship between age to hair growth (Ellis, J. A., & Sinclair, R. D. (2008)). However, the newly created drug (luxuriant) performs better than existing treatments for male pattern baldness problem. Assumptions are being violated and the lower p-value(<0.0001) for Shapiro-Wil test implies that we reject the null hypothesis. thus, the given dataset is not normally distributed. The other variables such as genetic history, hair quality, mental health for the treatment period, and physical health history could affect hair growth in MPB treatments. 
 
 ## References
 
@@ -119,10 +118,7 @@ Swanson, N., Abramovits, W., Berman, B., Kulp, J., Rigel, D. S., & Levy, S. (201
 
 Liu, F., Hamer, M. A., Heilmann, S., Herold, C., Moebus, S., Hofman, A., Uitterlinden, A. G., Noethen, M. M., van Duijn, C. M., Nijsten, T. E. C., & Kayser, M. (n.d.). Prediction of male-pattern baldness from genotypes. EUROPEAN JOURNAL OF HUMAN GENETICS, 24(6), 895–902. https://doi.org/10.1038/ejhg.2015.220
 
-Mirmirani, P. (n.d.). Age-related hair changes in men: Mechanisms and management of alopecia and graying. MATURITAS, 80(1), 58–62. https://doi.org/10.1016/j.maturitas.2014.10.008
-
 Rexbye, H., Petersen, I., Iachina, M., Mortensen, J., McGue, M., Vaupel, J., & Christensen, K. (n.d.). Hair loss among elderly men: Etiology and impact on perceived age. JOURNALS OF GERONTOLOGY SERIES A-BIOLOGICAL SCIENCES AND MEDICAL SCIENCES, 60(8), 1077–1082.
-
 
 Moody, J. (2019, September 5). What does RMSE really mean? Https://Towardsdatascience.Com/. https://towardsdatascience.com/what-does-rmse-really-mean-806b65f2e48e
 
